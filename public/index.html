@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParkFinder GIS | Islamabad & Rawalpindi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside id="sidebar">
+    <header class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"/><path d="M12 22v-3"/></svg>
+      </div>
+      <div>
+        <h1>ParkFinder GIS</h1>
+        <p>Parks & recreation, Islamabad and Rawalpindi</p>
+      </div>
+    </header>
+
+    <div class="stats">
+      <div class="stat"><b id="st-shown">0</b><span>Shown</span></div>
+      <div class="stat"><b id="st-free">0</b><span>Free entry</span></div>
+      <div class="stat"><b id="st-good">0</b><span>Good condition</span></div>
+    </div>
+
+    <nav class="tabs" id="tabs" data-active="explore">
+      <span class="ind"></span>
+      <button class="tab active" data-tab="explore">Explore</button>
+      <button class="tab" data-tab="manage">Add / Edit</button>
+    </nav>
+
+    <section id="explore" class="view active">
+      <div class="search">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="f-search" placeholder="Search by name or area">
+      </div>
+      <div class="row">
+        <select id="f-city"><option value="">All cities</option><option>Islamabad</option><option>Rawalpindi</option></select>
+        <select id="f-type"><option value="">All types</option><option>Park</option><option>Playground</option><option>Walking Track</option><option>Sports Ground</option></select>
+      </div>
+      <div class="row">
+        <select id="f-condition"><option value="">Any condition</option><option>Good</option><option>Fair</option><option>Poor</option></select>
+        <button id="btn-reset" class="ghost">Reset filters</button>
+      </div>
+      <div id="list">
+        <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+      </div>
+    </section>
+
+    <section id="manage" class="view">
+      <h2 id="form-title">Add a new facility</h2>
+      <p class="hint">Click anywhere on the map to set the location.</p>
+      <form id="park-form" novalidate>
+        <input type="hidden" id="p-id">
+        <label>Name *<input type="text" id="p-name" maxlength="150"></label>
+        <div class="row">
+          <label>Type *<select id="p-type"><option>Park</option><option>Playground</option><option>Walking Track</option><option>Sports Ground</option></select></label>
+          <label>City *<select id="p-city"><option>Islamabad</option><option>Rawalpindi</option></select></label>
+        </div>
+        <label>Area / Sector<input type="text" id="p-area" maxlength="100"></label>
+        <div class="row">
+          <label>Entry fee (PKR)<input type="number" id="p-fee" min="0" value="0"></label>
+          <label>Condition<select id="p-condition"><option>Good</option><option>Fair</option><option>Poor</option></select></label>
+        </div>
+        <label>Opening hours<input type="text" id="p-hours" maxlength="50" placeholder="e.g. 6am-10pm"></label>
+        <label>Amenities<textarea id="p-amenities" rows="2"></textarea></label>
+        <div class="row">
+          <label>Latitude *<input type="number" id="p-lat" step="any"></label>
+          <label>Longitude *<input type="number" id="p-lng" step="any"></label>
+        </div>
+        <div id="form-message"></div>
+        <div class="row">
+          <button type="submit" id="btn-save">Save facility</button>
+          <button type="button" id="btn-clear" class="ghost">Clear</button>
+        </div>
+        <button type="button" id="btn-delete" class="danger" hidden>Delete this record</button>
+      </form>
+    </section>
+
+    <section class="legend-card">
+      <div class="legend-head"><h4>Legend</h4><span>Tap a type to show or hide it</span></div>
+      <div id="legend-items" class="legend-grid"></div>
+    </section>
+  </aside>
+
+  <main id="stage">
+    <div id="map"></div>
+    <div id="basemaps" role="group" aria-label="Base map"></div>
+    <div id="maplegend"></div>
+  </main>
+
+  <div id="toast"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
