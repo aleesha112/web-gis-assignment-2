@@ -343,4 +343,7 @@ $('btn-reset').addEventListener('click', () => {
   load(true);
 });
 
+// Clear any filter values the browser restored on refresh
+['f-search', 'f-city', 'f-type', 'f-condition'].forEach((id) => { $(id).value = ''; });
+
 load(true);
